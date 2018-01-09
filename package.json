@@ -1,0 +1,23 @@
+{
+  "name": "mood_sunshine_backend",
+  "version": "1.0.0",
+  "description": "mood sun shine web app backend",
+  "repository": {
+    "url": "git@github.com:QiIL/mood_sunshine_backend.git"
+  },
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "qillk",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "prettier": "^1.9.2"
+  }
+}
