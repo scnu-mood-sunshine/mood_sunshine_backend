@@ -5,12 +5,13 @@ const nconf = require('nconf')
 const saltRound = 10
 
 const UserSchema = new mongoose.Schema({
-  user_name: {type: String, required: true, unique: true}, // 登录名
-  nickname: {type: String, required: true}, // 昵称
-  password: {type: String, required: true}, // 密码(加盐哈希)
-  app_secret: {type: String, default: GetHmac()}, // token用
-  create_at: {type: Date, default: Date.now()}, // 创建时间
-  update_at: {type: Date, default: Date.now()} // 更新时间
+  user_name: { type: String, required: true, unique: true }, // 登录名
+  password: { type: String, required: true }, // 密码(加盐哈希)
+  nickname: { type: String, required: true }, // 昵称
+  background_img: { type: String, required: true }, // 背景图
+  app_secret: { type: String, default: GetHmac() }, // token用
+  create_at: { type: Date, default: Date.now() }, // 创建时间
+  update_at: { type: Date, default: Date.now() } // 更新时间
 },
 {
   versionKey: false,

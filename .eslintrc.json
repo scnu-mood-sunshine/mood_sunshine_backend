@@ -29,6 +29,7 @@
 
   "rules": {
     "max-len": [2, 80, 4],
+    "object-curly-spacing": ["error", "always"],
     "accessor-pairs": "error",
     "arrow-spacing": ["error", { "before": true, "after": true }],
     "block-spacing": ["error", "always"],
