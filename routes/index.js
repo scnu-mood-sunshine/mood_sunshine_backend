@@ -4,6 +4,8 @@ const Router = require('koa-router')
 const base = require('../api/models/base')
 const User = require('../api/models/user')
 const router = new Router()
+// const apiRouter = new Router()
+// const authRouter = new Router()
 
 router.prefix('/api')
 
