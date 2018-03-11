@@ -1,13 +1,15 @@
 /**
  * twitter_snowflake - qill
  * snowflake结构如下
- * 0- 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
+ * 0-0000000000 0000000000 0000000000 0000000000 0-00000-00000-000000000000
  * 1位标识，由于最高为是符号为，id是正数所以最高为是0
- * 41位时间戳储存时间戳的差值 41位时间戳可以用69年， T = (1L << 41) / (1000L * 60 * 60 * 24 * 365) = 69 <br>
+ * 41位时间戳储存时间戳的差值 41位时间戳可以用69年，
+ * T = (1L << 41) / (1000L * 60 * 60 * 24 * 365) = 69 <br>
  * 10位的数据机器位，可以部署在1024个节点，包括5为datacenterId和5位workerId
  * 12位序列，毫秒内的计数，12为的计数顺序号支持每个节点每毫秒（同一机器，同一时间戳）产生4096个ID序号
  * 加起来刚好64位，为一个LONG型
- * snowflake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生id碰撞（有数据中心id和机器id作区分），并且效率较高，经测试，snowflake每秒能够产生26万个左右的的ID
+ * snowflake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生id碰撞（有数据中心id和机器id作区分）
+ * ，并且效率较高，经测试，snowflake每秒能够产生26万个左右的的ID
  * 本系统的snowflake的机器应该不会太多，所以减少了2位机器位，并把这些机器位分配到时间位和毫秒内计数位。
  */
 'use strict'
@@ -74,7 +76,8 @@ module.exports = {
     // const datacenterShift = const sequenceBits + const workerIdBits
 
     // /** 时间戳向左移22位（4+4+13）*/
-    // const timestampShift = const sequenceBits + const workerIdBits + const datacenterIdBits;
+    // const timestampShift = const sequenceBits +
+    // const workerIdBits + const datacenterIdBits;
 
     /** 生成序列的掩码，这里为8181 (0b1111111111111=0x1fff=8181) */
     const sequenceMask = -1 ^ (-1 << sequenceBits)

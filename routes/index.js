@@ -3,21 +3,27 @@
 const Router = require('koa-router')
 const base = require('../api/models/base')
 const User = require('../api/models/user')
+const logger = require('../api/middlewares/logger')
 const router = new Router()
-// const apiRouter = new Router()
-// const authRouter = new Router()
+const apiRouter = new Router()
+const authRouter = new Router()
 
 router.prefix('/api')
+apiRouter.prefix('/v1')
+authRouter.prefix('/v1/auth')
 
 router.get('/', async (ctx, next) => {
   ctx.redirect('http://google.com')
 })
 
 // 登录
-router.post('/login', async ctx => {
+apiRouter.post('/login', async ctx => {
   const { userName, passwd } = ctx.request.body
   try {
     const user = await User.findByName(userName)
+    if (!user) {
+      ctx.throw(423, '用户不存在')
+    }
     const isMatch = await user.comparePassword(passwd)
     if (!isMatch) {
       ctx.throw(423, '用户名或密码错误！')
@@ -34,24 +40,29 @@ router.post('/login', async ctx => {
 })
 
 // 注册
-router.post('/register', async ctx => {
+apiRouter.post('/register', async ctx => {
   const { userName, passwd } = ctx.request.body
+  try {
+    const user = new User({
+      user_name: userName,
+      password: passwd
+    })
+    await user.save()
 
-  let user = new User({
-    user_name: userName,
-    password: passwd
-  })
-  let result = await user.save()
-  console.log('result: ', result)
-
-  ctx.body = {
-    code: 200,
-    message: '注册成功！'
+    ctx.body = {
+      code: 200,
+      message: '注册成功！'
+    }
+  } catch (error) {
+    ctx.body = {
+      code: 500,
+      message: error.message
+    }
   }
 })
 
 // 获取用户信息
-router.post('/userinfo', async ctx => {
+authRouter.post('/userinfo', async ctx => {
   const user = await base.checkToken(ctx, User, true)
   ctx.body = {
     code: 200,
@@ -68,7 +79,7 @@ router.post('/userinfo', async ctx => {
   */
 })
 
-router.post('/v1/changePassword', async ctx => {
+authRouter.post('/changePassword', async ctx => {
   const user = await User.findByName(ctx.request.body.userName)
   if (!user) {
     ctx.body = {
@@ -87,5 +98,10 @@ router.post('/v1/changePassword', async ctx => {
     }
   }
 })
+
+router.use(logger())
+
+router.use(apiRouter.routes(), apiRouter.allowedMethods())
+router.use(authRouter.routes(), authRouter.allowedMethods())
 
 module.exports = router

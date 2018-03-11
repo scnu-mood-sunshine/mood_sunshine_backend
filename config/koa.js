@@ -5,7 +5,7 @@ const jwt = require('koa-jwt')
 const logger = require('koa-logger')
 const cors = require('kcors')
 const bodyparser = require('koa-bodyparser')
-const router = require('../route/index')
+const router = require('../routes/index')
 const app = module.exports = new Koa()
 
 // 路由
