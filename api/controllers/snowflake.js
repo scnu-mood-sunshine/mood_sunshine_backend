@@ -1,4 +1,5 @@
 'use strict'
+
 const SnowFlakeService = require('../services/snowflake')
 
 module.exports = {

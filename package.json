@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "lint": "eslint ./**.js",
-    "test": "NODE_ENV=unittest node_modules/.bin/mocha"
+    "test": "NODE_ENV=unittest node_modules/.bin/mocha --harmony"
   },
   "author": "qillk",
   "license": "ISC",

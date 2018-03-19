@@ -3,8 +3,19 @@ const { request } = require('../bootstrap.test')
 const assert = require('power-assert')
 const User = require('../../api/models/user')
 
-describe('User', () => {
-  it('changePassword', async () => {
+describe('Controller: User', () => {
+  it('Action: login', async () => {
+    const result = await request
+      .post('/api/v1/login')
+      .send({
+        userName: 'aaa',
+        password: 'aaa'
+      })
+      .expect(200)
+
+    assert(result.body.code === 200)
+  })
+  it('Action: changePassword', async () => {
     const result = await request
       .post('/api/v1/changePassword')
       .send({
@@ -22,17 +33,17 @@ describe('User', () => {
         password: 'aaa'
       })
   })
-  it('userinfo', async () => {
+  it('Action: userinfo', async () => {
     const user = await request
-      .post('/api/login')
+      .post('/api/v1/login')
       .send({
         userName: 'aaa',
-        passwd: 'aaa'
+        password: 'aaa'
       })
       .expect(200)
 
     const result = await request
-      .post('/api/userinfo')
+      .get('/api/auth/userinfo')
       .set({ Authorization: 'Bearer ' + user.body.token })
       .expect(200)
 

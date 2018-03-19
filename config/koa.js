@@ -25,7 +25,7 @@ if (nconf.get('NODE_ENV') !== 'unittest') {
 }
 app.use(
   jwt({ secret: nconf.get('jwt_secret') }).unless({
-    path: [/^\/api\/login/, /^\/api\/register/, /^\/api\/v1/]
+    path: [/^\/api\/v1/]
   })
 )
 app.use(router.routes(), router.allowedMethods())
