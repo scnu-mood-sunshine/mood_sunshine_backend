@@ -9,7 +9,7 @@ function signToken (user) {
       secret: user.app_secret
     },
     nconf.get('jwt_secret'),
-    { expiresIn: 3600 }
+    { expiresIn: '2h' }
   )
   return token
 }
@@ -18,7 +18,7 @@ function signToken (user) {
 async function checkToken (ctx, User, getUser) {
   const token = ctx.state.user // 获取jwt
   if (token) {
-    const user = await User.checkToken(token)
+    const user = await User.checkAndUpdateToken(token)
     if (user) {
       if (getUser) {
         return user

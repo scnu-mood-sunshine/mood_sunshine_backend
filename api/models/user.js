@@ -8,7 +8,10 @@ const UserSchema = new mongoose.Schema({
   user_name: { type: String, required: true, unique: true }, // 登录名
   password: { type: String, required: true }, // 密码(加盐哈希)
   nickname: { type: String, required: true }, // 昵称
-  background_img: { type: String, required: true }, // 背景图
+  avatar: { type: String, required: true }, // 头像
+  level: { type: Number }, // 用户等级
+  manager_level: { type: Number, default: 0 }, // 管理员等级 0级为用户
+  badge: { type: String }, // 用户徽章（保留）
   app_secret: { type: String, default: GetHmac() }, // token用
   create_at: { type: Date, default: Date.now() }, // 创建时间
   update_at: { type: Date, default: Date.now() } // 更新时间
@@ -55,6 +58,16 @@ UserSchema.statics.findByName = async function (userName) {
 }
 
 UserSchema.statics.checkToken = async function (token) {
+  // const user = await this.findOne({ _id: token.id })
+  const user = await this.findById(token.id)
+  if (token.secret === user.app_secret) {
+    return user
+  } else {
+    throw Error('验证未通过!')
+  }
+}
+
+UserSchema.statics.checkAndUpdateToken = async function (token) {
   const secret = GetHmac()
   // const user = await this.findOne({ _id: token.id })
   const user = await this.findOneAndUpdate(

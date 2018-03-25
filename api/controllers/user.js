@@ -46,12 +46,12 @@ const register = async ctx => {
 
 const getUserInfo = async ctx => {
   try {
-    if (ctx.state.userMassage) {
-      const user = ctx.state.userMassage
+    if (ctx.state.userMessage) {
+      const user = ctx.state.userMessage
       ctx.body = {
         code: 200,
         message: '获取用户信息成功！',
-        userName: user.user_name,
+        data: ctx.state.userBaseMessage,
         token: base.signToken(user)
       }
     } else {

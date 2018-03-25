@@ -6,7 +6,7 @@ const CommentSchema = new mongoose.Schema({
   to_user_id: { type: String, default: '' }, // 被评论用户的id
   compiled_content: { type: String }, // 评论内容
   floor: { type: Number }, // 评论楼层
-  in_use: { type: Boolean }, // 是否可用
+  in_use: { type: Boolean, default: true }, // 是否可用
   create_at: { type: Date, default: Date.now() },
   owner: { // 评论者信息
     user_id: { type: String, required: true }, // id
@@ -40,5 +40,7 @@ const CommentSchema = new mongoose.Schema({
     }
   }
 })
+
+CommentSchema.index({ create_at: -1 })
 
 module.exports = mongoose.model('Comment', CommentSchema)
