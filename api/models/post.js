@@ -7,8 +7,8 @@ const PostSchema = new mongoose.Schema({
   content: { type: String, required: true }, // 主要内容
   tags: { type: Array }, // 相关标签
   mood_tags: { type: Array }, // 心情标签(写文章时的心情)
-  in_use: { type: Boolean, default: true }, // 是否可用
-  hidden: { type: Boolean, default: false }, // 是否隐藏
+  in_use: { type: Boolean, default: true }, // 是否可用(对于公众)
+  hidden: { type: Boolean, default: false }, // 是否隐藏(对于作者)
   owner: {
     user_id: { type: String }, // 作者id
     avatar: { type: String }, // 作者头像
@@ -18,6 +18,7 @@ const PostSchema = new mongoose.Schema({
   },
   count: {
     view: { type: Number, default: 0 }, // 阅览数
+    mood_get: { type: Number, default: 0 }, // 获得心情数
     like: { type: Number, default: 0 }, // 点赞数
     comment: { type: Number, default: 0 }, // 评论数
     words: { type: Number, default: 0 }, // 字数

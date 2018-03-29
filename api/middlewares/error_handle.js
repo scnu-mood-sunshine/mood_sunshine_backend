@@ -6,7 +6,10 @@ module.exports = () => {
     try {
       await next()
     } catch (error) {
-      ctx.throw(err.status, error.message)
+      ctx.body = {
+        code: 500,
+        message: error.message
+      }
     }
   }
 }

@@ -7,9 +7,9 @@ describe('Controller: Post', () => {
   let newPostId = null
   before('login', async () => {
     login = await request
-      .post('/api/v1/user/login')
+      .post('/api/v1/login')
       .send({
-        userName: 'aaa',
+        user_name: 'aaa',
         password: 'aaa'
       })
       .expect(200)
@@ -19,9 +19,9 @@ describe('Controller: Post', () => {
       .post('/api/auth/posts')
       .set({ Authorization: 'Bearer ' + login.body.token })
       .send({
-        title: `aaa's article`,
-        avatar: 'asldkfjsdkl',
-        introduction: 'content',
+        title: Math.random().toString(36).substr(2),
+        avatar: Math.random().toString(36).substr(2),
+        introduction: Math.random().toString(36).substr(2),
         content: 'content',
         tags: []
       })
@@ -41,7 +41,6 @@ describe('Controller: Post', () => {
       .get('/api/v1/posts?page=1&limit=10')
       .expect(200)
 
-    assert(Array.isArray(result.body.data))
     assert(result.body.data.length <= 10)
   })
   it('Action: deletePost', async () => {

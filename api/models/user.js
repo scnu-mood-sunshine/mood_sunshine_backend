@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true }, // 密码(加盐哈希)
   nickname: { type: String, required: true }, // 昵称
   avatar: { type: String, required: true }, // 头像
-  level: { type: Number }, // 用户等级
+  level: { type: Number, default: 0 }, // 用户等级
   manager_level: { type: Number, default: 0 }, // 管理员等级 0级为用户
   badge: { type: String }, // 用户徽章（保留）
   app_secret: { type: String, default: GetHmac() }, // token用

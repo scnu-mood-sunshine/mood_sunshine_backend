@@ -9,7 +9,7 @@ function signToken (user) {
       secret: user.app_secret
     },
     nconf.get('jwt_secret'),
-    { expiresIn: '2h' }
+    { expiresIn: '24h' }
   )
   return token
 }

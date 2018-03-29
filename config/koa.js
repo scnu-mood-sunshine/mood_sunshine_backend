@@ -4,7 +4,6 @@ const json = require('koa-json')
 const jwt = require('koa-jwt')
 const logger = require('koa-logger')
 const cors = require('kcors')
-const bodyparser = require('koa-bodyparser')
 const router = require('../routes/index')
 const parameter = require('koa-parameter')
 const koaBody = require('koa-body')
@@ -13,11 +12,8 @@ const path = require('path')
 const app = module.exports = new Koa()
 
 // json body parser
-app.use(
-  bodyparser({
-    enableTypes: ['json', 'form', 'text']
-  })
-)
+// 文件上传
+app.use(koaBody())
 
 // 参数验证
 app.use(parameter(app))
@@ -30,9 +26,6 @@ if (nconf.get('NODE_ENV') !== 'unittest') {
   app.use(cors())
   // 日志
   app.use(logger())
-  // 文件上传
-  app.use(koaBody({ multipart: true }))
-
   // 静态服务器
   app.use(serve(path.join(__dirname, '/public')))
 }

@@ -31,6 +31,7 @@ authRouter.use(middlewares.checkToken())
 /** 路由编写 */
 require('./user')(router, authRouter, commonRouter)
 require('./posts')(router, authRouter, commonRouter)
+require('./mood')(router, authRouter, commonRouter)
 
 /** 整合路由 */
 router.use(commonRouter.routes(), commonRouter.allowedMethods())

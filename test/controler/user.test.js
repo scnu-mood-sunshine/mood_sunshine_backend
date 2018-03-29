@@ -6,9 +6,9 @@ const User = require('../../api/models/user')
 describe('Controller: User', () => {
   it('Action: login', async () => {
     const result = await request
-      .post('/api/v1/user/login')
+      .post('/api/v1/login')
       .send({
-        userName: 'aaa',
+        user_name: 'aaa',
         password: 'aaa'
       })
       .expect(200)
@@ -19,7 +19,7 @@ describe('Controller: User', () => {
     const result = await request
       .post('/api/v1/changePassword')
       .send({
-        userName: 'aaa',
+        user_name: 'aaa',
         password: '123456'
       })
       .expect(200)
@@ -29,21 +29,21 @@ describe('Controller: User', () => {
     await request
       .post('/api/v1/changePassword')
       .send({
-        userName: 'aaa',
+        user_name: 'aaa',
         password: 'aaa'
       })
   })
   it('Action: userinfo', async () => {
     const user = await request
-      .post('/api/v1/user/login')
+      .post('/api/v1/login')
       .send({
-        userName: 'aaa',
+        user_name: 'aaa',
         password: 'aaa'
       })
       .expect(200)
 
     const result = await request
-      .get('/api/auth/user/userinfo')
+      .get('/api/auth/user')
       .set({ Authorization: 'Bearer ' + user.body.token })
       .expect(200)
 
