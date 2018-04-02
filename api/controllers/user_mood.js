@@ -4,18 +4,18 @@
 const UserMoodModel = require('../models/user_mood')
 const { judgeMoodDate, getDayByDate } = require('../services/handle_time')
 const nconf = require('nconf')
-const _ = require('lodash')
 
 /** 创建一条心情 */
 const createNewMood = async ctx => {
   ctx.verifyParams({
     mood_name: 'string',
+    mood_type: 'string',
     sentence: { type: 'string', require: false }
   })
-  const body = ctx.body
+  const body = ctx.request.body
   body.user_id = ctx.state.userBaseMessage.user_id
   const mood = new UserMoodModel(body)
-  mood.save()
+  await mood.save()
   ctx.body = {
     code: 201,
     message: '加了一条新的心情！'
@@ -29,7 +29,7 @@ const updateMood = async ctx => {
     mood_name: 'string',
     sentence: { type: 'string', require: false }
   })
-  const body = ctx.body
+  const body = ctx.request.body
   const mood = await UserMoodModel.findById(body.mood_id)
   if (!judgeMoodDate(mood.create_at, nconf.get('mood_validity_period'))) {
     ctx.throw(400, '心情已经定格了，过了这么久就别改了吧～')
@@ -48,8 +48,9 @@ const updateMood = async ctx => {
 const getMoodByDay = async ctx => {
   ctx.verifyParams({
     date: 'int'
-  }, ctx.query)
-  const clientTime = new Date(ctx.query.date)
+  })
+  const body = ctx.request.body
+  const clientTime = new Date(body.date)
   const clientDate = new Date(getDayByDate(clientTime))
 
   const moods = await UserMoodModel.find({
@@ -61,12 +62,27 @@ const getMoodByDay = async ctx => {
   })
   ctx.body = {
     code: 200,
-    data: _.omit(moods, ['user_id'])
+    data: moods
+  }
+}
+
+/** 获取文章的心情统计 */
+const getPostMoodTotal = async ctx => {
+  const postId = ctx.params.post_id
+  const result = await UserMoodModel.aggregate([
+    { $match: { toPost: postId } },
+    { $group: { _id: '$mood_type', count: { $sum: 1 } } },
+    { $project: { _id: 0, mooe_type: '$_id', count: '$count' } }
+  ])
+  ctx.body = {
+    code: 200,
+    data: result
   }
 }
 
 module.exports = {
   createNewMood,
   updateMood,
-  getMoodByDay
+  getMoodByDay,
+  getPostMoodTotal
 }

@@ -14,6 +14,7 @@ module.exports = () => {
             user_name: user.user_name,
             user_id: user.id,
             nickname: user.nickname,
+            sign: user.sign,
             avatar: user.avatar,
             level: user.level,
             badge: user.badge,

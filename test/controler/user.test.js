@@ -15,6 +15,19 @@ describe('Controller: User', () => {
 
     assert(result.body.code === 200)
   })
+  it('Action: register', async () => {
+    const username = Math.random().toString(36).substr(2)
+    const result = await request
+      .post('/api/v1/register')
+      .send({
+        user_name: username,
+        password: username,
+        nickname: username,
+        avatar: username
+      })
+
+    assert(result.body.code === 200)
+  })
   it.skip('Action: changePassword', async () => {
     const result = await request
       .post('/api/v1/changePassword')

@@ -17,8 +17,9 @@ const CommentSchema = new mongoose.Schema({
     mood_tags: { type: Array } // 心情标签(评论时的心情)
   },
   count: { // 相关计数
-    reply: { type: Number }, // 回复数
-    like: { type: Number } // 点赞数
+    reply: { type: Number, default: 0 }, // 回复数
+    like: { type: Number, default: 0 }, // 点赞数
+    mood_get: { type: Number, default: 0 } // 获得心情数
   },
   children: [{ // 子评论
     compiled_content: { type: String }, // 评论内容
