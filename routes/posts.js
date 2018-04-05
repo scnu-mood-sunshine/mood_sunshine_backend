@@ -9,6 +9,8 @@ module.exports = (router, authRouter, commonRouter) => {
   commonRouter.get('/posts/:post_id', PostController.getPostDetail)
   // 获取文章列表
   commonRouter.get('/posts', PostController.getPostList)
+  // 获取当前用户文章列表
+  authRouter.get('/userposts', PostController.getOwnPostList)
   // 删除文章
   authRouter.delete('/posts/:post_id', PostController.deletePost)
 }

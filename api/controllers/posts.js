@@ -77,8 +77,11 @@ const getPostList = async ctx => {
         avatar: o.avatar,
         introduction: o.introduction,
         tags: o.tags,
-        author: o.owner.nickname,
-        author_id: o.owner.id,
+        author: {
+          name: o.owner.nickname,
+          id: o.owner.id,
+          avatar: o.owner.avatar
+        },
         create_at: o.create_at,
         views: o.count.view,
         mood_get: o.count.mood_get
@@ -92,9 +95,50 @@ const getPostList = async ctx => {
     data: result
   }
 }
+
+/** 获取当前用户的文章列表 */
+const getOwnPostList = async ctx => {
+  const page = Number(ctx.query.page) || 1
+  const limit = Number(ctx.query.limit) || 12
+
+  const postList = await PostModel.find({
+    'owner.user_id': ctx.state.userBaseMessage.user_id
+  })
+    .sort({ update_at: -1 })
+    .skip((page - 1) * limit)
+    .limit(8)
+
+  const result = _.chain(postList)
+    .map(o => {
+      return {
+        id: o.id,
+        title: o.title,
+        avatar: o.avatar,
+        introduction: o.introduction,
+        tags: o.tags,
+        author: {
+          name: o.owner.nickname,
+          id: o.owner.id,
+          avatar: o.owner.avatar
+        },
+        create_at: o.create_at,
+        update_at: o.update_at,
+        views: o.count.view,
+        mood_get: o.count.mood_get
+      }
+    })
+    .value()
+  ctx.body = {
+    code: 200,
+    message: '获取当前用户文章成功',
+    data: result
+  }
+}
+
 module.exports = {
   getPostDetail,
   createNewPost,
   deletePost,
-  getPostList
+  getPostList,
+  getOwnPostList
 }
